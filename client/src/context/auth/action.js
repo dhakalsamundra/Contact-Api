@@ -11,7 +11,9 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  CLEAR_ERRORS
+  CLEAR_ERRORS,
+  FORGET_PASSWORD_SUCCESS,
+  FORGET_PASSWORD_FAIL
 } from '../types';
 
 const AuthState = props => {
@@ -90,7 +92,27 @@ const AuthState = props => {
       });
     }
   };
-
+  // ForgetPassword
+  const forgetPassword = async formData => {
+    const config = {
+      headers: {
+        'Content-Type': 'text/plain'
+      }
+    };
+    try {
+      const res = await axios.post('/api/forgetPassword', formData, config);
+      dispatch({
+        type: FORGET_PASSWORD_SUCCESS,
+        payload: res.data
+      });
+      loadUser();
+    } catch (err){
+      dispatch({
+        type: FORGET_PASSWORD_FAIL,
+        payload: err.response.data.msg
+      })
+    }
+  }
   // Logout
   const logout = () => dispatch({ type: LOGOUT });
 
@@ -108,6 +130,7 @@ const AuthState = props => {
         register,
         loadUser,
         login,
+        forgetPassword,
         logout,
         clearErrors
       }}
