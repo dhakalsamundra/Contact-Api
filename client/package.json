@@ -34,5 +34,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3002"
+  "proxy": "http://localhost:3002",
+  "secure": false
 }
