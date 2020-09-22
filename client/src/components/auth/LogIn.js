@@ -41,17 +41,10 @@ export default function Login(props){
       });
     }
   };
-<<<<<<< HEAD
   const handlePasswordReset = () => {
     props.history.push('/forgetPassword')
   }
   
-=======
-
-  const handlePasswordReset = () => {
-    props.history.push('/forgetPassword')
-  }
->>>>>>> 8c2769e6fdd87aa685d5cc9e531466da61ef0a05
   return (
     <div className='form-container'>
       <h1>
@@ -86,10 +79,6 @@ export default function Login(props){
           className='btn btn-primary btn-block'
         />
         <button onClick={handlePasswordReset} className='btn btn-secondary btn-block'>Forget Password</button>
-<<<<<<< HEAD
-
-=======
->>>>>>> 8c2769e6fdd87aa685d5cc9e531466da61ef0a05
       </form>
     </div>
   );
