@@ -154,6 +154,7 @@ const AuthState = props => {
         loadUser,
         login,
         forgetPassword,
+        newPassword,
         logout,
         clearErrors
       }}
