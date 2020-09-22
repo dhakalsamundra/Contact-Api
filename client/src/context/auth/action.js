@@ -119,16 +119,16 @@ const AuthState = props => {
   const newPassword = async formData => {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'text/plain'
       }
-    }
+    };
     try {
-      const res = await axios.post(`api/auth/forgetPassword`, formData, config)
+      const res = await axios.post('/api/auth/forgetPassword', formData, config);
       dispatch({
         type: NEW_PASSWORD_SUCCESS,
         payload: res.data
-      })
-      loadUser()
+      });
+      loadUser();
     } catch (err){
       dispatch({
         type: NEW_PASSWORD_FAIL,
@@ -154,7 +154,6 @@ const AuthState = props => {
         loadUser,
         login,
         forgetPassword,
-        newPassword,
         logout,
         clearErrors
       }}

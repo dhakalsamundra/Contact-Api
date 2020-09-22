@@ -4,7 +4,7 @@ import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
 import ResetLink from './components/pages/ResetLink';
-import ResetPassword from './components/pages/NewPassword';
+import ResetPassword from './components/pages/ResetPassword';
 import Register from './components/auth/Register';
 import Login from './components/auth/LogIn';
 import Alerts from './components/layout/Alerts';
@@ -31,7 +31,11 @@ const App = () => {
                   <Route exact path='/register' component={Register} />
                   <Route exact path='/login' component={Login} />
                   <Route exact path="/forgetPassword" component={ResetLink} />
+<<<<<<< HEAD
                   <Route exact path="/updatePassword/:token" component={ResetPassword} />
+=======
+                  {/* <Route exact path="/updatePassword/:token" component={ResetPassword} /> */}
+>>>>>>> 8c2769e6fdd87aa685d5cc9e531466da61ef0a05
                 </Switch>
               </div>
             </Fragment>
