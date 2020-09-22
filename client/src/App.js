@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
+import ResetLink from './components/pages/ResetLink';
+import ResetPassword from './components/pages/NewPassword';
 import Register from './components/auth/Register';
 import Login from './components/auth/LogIn';
 import Alerts from './components/layout/Alerts';
@@ -28,6 +30,8 @@ const App = () => {
                   <Route exact path='/about' component={About} />
                   <Route exact path='/register' component={Register} />
                   <Route exact path='/login' component={Login} />
+                  <Route exact path="/forgetPassword" component={ResetLink} />
+                  <Route exact path="/updatePassword/:token" component={ResetPassword} />
                 </Switch>
               </div>
             </Fragment>
