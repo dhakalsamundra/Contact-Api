@@ -31,11 +31,7 @@ const App = () => {
                   <Route exact path='/register' component={Register} />
                   <Route exact path='/login' component={Login} />
                   <Route exact path="/forgetPassword" component={ResetLink} />
-<<<<<<< HEAD
                   <Route exact path="/updatePassword/:token" component={ResetPassword} />
-=======
-                  {/* <Route exact path="/updatePassword/:token" component={ResetPassword} /> */}
->>>>>>> 8c2769e6fdd87aa685d5cc9e531466da61ef0a05
                 </Switch>
               </div>
             </Fragment>
