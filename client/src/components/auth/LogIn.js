@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from '../../context/auth/context';
 import AlertContext from '../../context/alert/context';
 
-const Login = props => {
+export default function Login(props){
   const alertContext = useContext(AlertContext);
   const authContext = useContext(AuthContext);
 
@@ -41,7 +41,10 @@ const Login = props => {
       });
     }
   };
-
+  const handlePasswordReset = () => {
+    props.history.push('/forgetPassword')
+  }
+  
   return (
     <div className='form-container'>
       <h1>
@@ -75,9 +78,9 @@ const Login = props => {
           value='Login'
           className='btn btn-primary btn-block'
         />
+        <button onClick={handlePasswordReset} className='btn btn-secondary btn-block'>Forget Password</button>
+
       </form>
     </div>
   );
 };
-
-export default Login;
