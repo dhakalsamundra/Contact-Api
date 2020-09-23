@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import config from 'config'
 import sgMail from '@sendgrid/mail'
 
+import { BadRequestError} from '../helpers/apiError'
 import User from '../models/User'
 
 export const findUserById = async (req, res) => {
@@ -15,7 +16,7 @@ export const findUserById = async (req, res) => {
       }
 }
 
-export const signIn = async(req, res, next) => {
+export const signIn = async(req, res) => {
     try {
       const {email, password} = req.body;
       let user = await User.findOne({email});
@@ -53,11 +54,14 @@ export const signIn = async(req, res, next) => {
     }
   }
 
-export const passwordRequestReset = async(req, res)=> {
+export const passwordRequestReset = async(req, res, next)=> {
+
   try {
-    const { email } = req.body
-    const user = await User.findOne({ email })
-    console.log('this is the controller of auth babes', email)
+    const user = await User.findOne(req.body.email)
+    console.log('forget password', user)
+
+    const sendGridApiKey = config.get('SENDGRID_API_KEY')
+    const fromMail = config.get('FROM_MAIL')
     if (!user)
       return res.json({
         message:
@@ -67,11 +71,11 @@ export const passwordRequestReset = async(req, res)=> {
     user.generatePasswordReset()
     await user.save()
     const link = `http://${req.headers.host}/api/v1/auth/resetPasswordRequest/${user.resetPasswordToken}`
-    sgMail.setApiKey(SENDGRID_API_KEY)
+    sgMail.setApiKey(sendGridApiKey)
     //send email
     const mailOptions = {
       to: user.email,
-      from: FROM_MAIL,
+      from: fromMail,
       subject: 'password change request',
       text: `Hi ${user.name}, click on this link to reset the password.
       ${link}`,
@@ -81,7 +85,7 @@ export const passwordRequestReset = async(req, res)=> {
       res.json({ message: 'Reset link has been sent to your email address.' })
     }
   } catch (error) {
-    next(new Request('Invalid Request', error))
+    res.send(new BadRequestError('Invalid Request', error))
   }
 }
 
