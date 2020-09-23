@@ -4,7 +4,7 @@ import Navbar from './components/layout/Navbar';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
 import ResetLink from './components/pages/ResetLink';
-import ResetPassword from './components/pages/ResetPassword';
+import ResetPassword from './components/pages/NewPassword';
 import Register from './components/auth/Register';
 import Login from './components/auth/LogIn';
 import Alerts from './components/layout/Alerts';
