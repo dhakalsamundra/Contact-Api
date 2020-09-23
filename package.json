@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Contact manager app",
   "main": "server.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "start": "nodemon --exec babel-node server.js",
     "client": "npm start --prefix client",
