@@ -1,36 +1,15 @@
 import express from 'express'
-import mongoose from 'mongoose'
 import path from 'path'
-import apiContentType from './middleware/apiContentType'
-import authJwt from './middleware/auth'
-import { MONGODB_URI } from './util/secrets'
 import authRouter from './routers/auth'
 import userRouter from './routers/user'
 import contactRouter from './routers/contact'
-import unless from './util/unless'
+import connectDB from './config/db'
 
 
 const app = express()
+connectDB();
 
 
-const mongoUrl = MONGODB_URI
-
-mongoose
-  .connect(mongoUrl, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log('MongoDB Connected...');
-})
-  .catch((err) => {
-    console.log(
-      'MongoDB connection error. Please make sure MongoDB is running. ' + err
-    )
-    process.exit(1)
-  })
-  
 //  const excludedPaths = [ /users/]
 
 // middlewares
