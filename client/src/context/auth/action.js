@@ -1,5 +1,6 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
+import jwt_decode from 'jwt-decode'
 import AuthContext from './context';
 import authReducer from './reducer';
 import setAuthToken from '../../utils/setAuthToken';
@@ -17,6 +18,7 @@ import {
   NEW_PASSWORD_SUCCESS,
   NEW_PASSWORD_FAIL
 } from '../types';
+
 
 const AuthState = props => {
   const initialState = {
@@ -83,8 +85,9 @@ const AuthState = props => {
 
       dispatch({
         type: LOGIN_SUCCESS,
-        payload: res.data
+        payload: res.data,
       });
+
 
       loadUser();
     } catch (err) {
@@ -123,12 +126,16 @@ const AuthState = props => {
       }
     };
     try {
-      const res = await axios.post('/api/auth/forgetPassword', formData, config);
+      if(localStorage.token) {
+        const token = localStorage.token
+        const decodedToken = jwt_decode(token)
+      const res = await axios.post(`/api/auth/forgetPassword/${decodedToken.id}`, formData, config);
       dispatch({
         type: NEW_PASSWORD_SUCCESS,
         payload: res.data
       });
       loadUser();
+    }
     } catch (err){
       dispatch({
         type: NEW_PASSWORD_FAIL,
