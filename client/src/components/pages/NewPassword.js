@@ -1,63 +1,86 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router';
 
 import AuthContext from '../../context/auth/context';
 import AlertContext from '../../context/alert/context';
 
 export default function NewPassword(props) {
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword ] = useState('')
-    const { token } = useParams()
-
-    const authContext = useContext(AuthContext)
     const alertContext = useContext(AlertContext)
-    const {newPassword, error, clearErrors, isAuthenticated} = authContext
+    const authContext = useContext(AuthContext)
+    
     const { setAlert } = alertContext
+    const {newPassword, error, clearErrors} = authContext
+    const {token} = useParams();
+
   
     useEffect(() => {
-        if (isAuthenticated) {
-          props.history.push('/');
-        }
         if (error === 'Invalid Credentials') {
             setAlert(error, 'danger');
             clearErrors();
           }
     // eslint-disable-next-line
-      }, [error, isAuthenticated, props.history]);
+      }, [error, props.history]);
 
-    const handleChangePassword = (e) => {
-      setPassword(e.target.value)
-    }
-    const handleChangeConfirmPassword = (e) => {
-      setConfirmPassword(e.target.value)
-    }
+    const [user, setUser] = useState({
+      password: '',
+      password2: ''
+    });
+      
+    const {password, password2 } = user;
+     
+    const onChange = e => setUser({ ...user, [e.target.name]: e.target.value });
+
   
-    const handleSubmit = async(e) => {
-    e.preventDefault()
-    if (password !== confirmPassword){
-      setAlert('password is not matching', 'danger')
-    } else {
-      newPassword({password, token})
-    }
+    const onSubmit = e => {
+      e.preventDefault();
+      if (password === '') {
+        setAlert('Field is mandatory', 'danger');
+      } else if (password !== password2) {
+        setAlert('Passwords do not match', 'danger');
+      } else {
+        newPassword({
+          password, token
+        });
+      }
     }
   return (
-        <div className="form-container">
-          <form onSubmit={handleSubmit}>
-            <label>Password:</label>
-            <input className="cPassword" type="password" value={password} onChange={handleChangePassword} />
-            <br></br>
-  
-            <label>Confirm Password:</label>
-            <input type="password" value={confirmPassword} onChange={handleChangeConfirmPassword} />
-            <br></br>
-            <input
-            className="btn btn-primary btn-block"
-            value="submit"
-            type="submit"
-            />
-          </form>
+    <div className='form-container'>
+    <h1>
+      Account <span className='text-primary'>Enter New Password</span>
+    </h1>
+    <form onSubmit={onSubmit}>
+        <div className='form-group'>
+          <label htmlFor='password'>Password</label>
+          <input
+            id='password'
+            type='password'
+            name='password'
+            value={password}
+            onChange={onChange}
+            required
+            minLength='6'
+          />
         </div>
+        <div className='form-group'>
+          <label htmlFor='password2'>Confirm Password</label>
+          <input
+            id='password2'
+            type='password'
+            name='password2'
+            value={password2}
+            onChange={onChange}
+            required
+            minLength='6'
+          />
+        </div>
+      <input
+        type='submit'
+        value='submit'
+        className='btn btn-primary btn-block'
+      />
+    </form>
+  </div>
   
-      )
-  }
+      );
+  };
   
