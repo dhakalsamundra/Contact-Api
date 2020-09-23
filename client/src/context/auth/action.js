@@ -1,6 +1,8 @@
 import React, { useReducer } from 'react';
 import axios from 'axios';
-import jwt_decode from 'jwt-decode'
+// import { useParams } from 'react-router';
+
+
 import AuthContext from './context';
 import authReducer from './reducer';
 import setAuthToken from '../../utils/setAuthToken';
@@ -122,20 +124,21 @@ const AuthState = props => {
   const newPassword = async formData => {
     const config = {
       headers: {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'application/json'
       }
     };
     try {
-      if(localStorage.token) {
-        const token = localStorage.token
-        const decodedToken = jwt_decode(token)
-      const res = await axios.post(`/api/auth/forgetPassword/${decodedToken.id}`, formData, config);
+      // // eslint-disable-next-line
+      //    const {token} = useParams();
+      // console.log('front end auth action', token)
+
+      const res = await axios.post(`/api/auth/resetPasswordRequest/${formData.token}`, formData, config);
+      console.log('front end auth action', formData.token)
       dispatch({
         type: NEW_PASSWORD_SUCCESS,
         payload: res.data
       });
       loadUser();
-    }
     } catch (err){
       dispatch({
         type: NEW_PASSWORD_FAIL,
