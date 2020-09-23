@@ -6,6 +6,9 @@ import sgMail from '@sendgrid/mail'
 import { BadRequestError} from '../helpers/apiError'
 import User from '../models/User'
 
+const sendGridApiKey = config.get('SENDGRID_API_KEY')
+const fromMail = config.get('FROM_MAIL')
+
 export const findUserById = async (req, res) => {
     try {
         const user = await User.findById(req.user.id).select('-password');
@@ -58,10 +61,6 @@ export const passwordRequestReset = async(req, res, next)=> {
 
   try {
     const user = await User.findOne(req.body.email)
-    console.log('forget password', user)
-
-    const sendGridApiKey = config.get('SENDGRID_API_KEY')
-    const fromMail = config.get('FROM_MAIL')
     if (!user)
       return res.json({
         message:
@@ -70,7 +69,7 @@ export const passwordRequestReset = async(req, res, next)=> {
     // generate and set the password reset token to the user database
     user.generatePasswordReset()
     await user.save()
-    const link = `http://${req.headers.host}/api/v1/auth/resetPasswordRequest/${user.resetPasswordToken}`
+    const link = `http://${req.headers.host}/api/auth/resetPasswordRequest/${user.resetPasswordToken}`
     sgMail.setApiKey(sendGridApiKey)
     //send email
     const mailOptions = {
@@ -111,15 +110,19 @@ export const resetPasswordTokenStatus = async(req, res) => {
 export const resetPassword = async(req, res) => {
   try {
     const { token } = req.params
+    const {password} = req.body
+    console.log('first step backend reset', token)
     const user = await User.findOne({
       resetPasswordToken: token,
       resetPasswordExpires: { $gt: Date.now() },
     })
+    console.log('2nd step backend reset', user)
     if (!user) {
-      throw new Error('Password reset token is invalid or has expired.')
-    } else {
+      throw new NotFoundError('Password reset token is invalid or has expired.')
+    }else {
       // set the new password in bcrypt
       const salt = bcrypt.genSaltSync(10)
+      console.log('fasdnfsangnrsg', req.body.password)
       const hashed = await bcrypt.hashSync(req.body.password, salt)
       //set the new password in database
       user.password = hashed
@@ -127,12 +130,15 @@ export const resetPassword = async(req, res) => {
       user.resetPasswordExpires = undefined
     }
     user.save()
+    console.log('final step', user)
+    sgMail.setApiKey(sendGridApiKey)
     const mailOptions = {
       to: user.email,
-      from: FROM_MAIL,
-      subject: 'New Password has been added.',
-      text: `Hi ${user.name}, this is a confirmation mail of changing the password.`,
+      from: fromMail,
+      subject: 'Password reset Confirmation.',
+      text: `Hi ${user.name}, Your Password was successfully changed.`,
     }
+    console.log('send confirm mail', mailOptions)
     const sendMail = await sgMail.send(mailOptions)
     if (sendMail) {
       res.json({ message: 'Login with your new password now.' })
