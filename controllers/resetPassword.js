@@ -9,13 +9,15 @@ import User from '../models/User'
 const sendGridApiKey = config.get('SENDGRID_API_KEY')
 const fromMail = config.get('FROM_MAIL')
 
-export const passwordRequestReset = async(req, res, next)=> {
-
+export const passwordRequestReset = async(req, res)=> {
     try {
-      const user = await User.findOne(req.body.email)
-      console.log('this is the user whose password need to reset', user)
+      const {email} = req.body
+      console.log('backend email', email)
+
+      const user = await User.findOne({email: email})
+      console.log('backend user', user)
       if (!user)
-        return res.json({
+        return res.send({
           message:
             'This email is not associated. Please check your email address.',
         })
