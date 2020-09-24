@@ -12,15 +12,12 @@ const fromMail = config.get('FROM_MAIL')
 export const passwordRequestReset = async(req, res)=> {
     try {
       const {email} = req.body
-      console.log('backend email', email)
 
       const user = await User.findOne({email: email})
-      console.log('backend user', user)
-      if (!user)
-        return res.send({
-          message:
-            'This email is not associated. Please check your email address.',
-        })
+
+      if (!user){
+      return res.status(400).json({msg: 'This email is not associated. Please check your email address.'});
+      }
       // generate and set the password reset token to the user database
       user.generatePasswordReset()
       await user.save()

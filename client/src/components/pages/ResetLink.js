@@ -8,17 +8,19 @@ export default function ResetPassword(props){
 
     const authContext = useContext(AuthContext)
     const alertContext = useContext(AlertContext);
-    const {forgetPassword, error, clearErrors} = authContext
+
     const { setAlert } = alertContext;
+    const {forgetPassword, error, clearErrors,isAuthenticated} = authContext
 
 
     useEffect(() => {
-        if (error === 'This email is not associated. Please check your email address.') {
-          setAlert(error, 'danger');
-          clearErrors();
-        }
-        // eslint-disable-next-line
-      }, [error]);
+      if (error === 'User already exists') {
+        setAlert(error, 'danger');
+        clearErrors();
+      }
+      // eslint-disable-next-line
+      },  [error, isAuthenticated, props.history])
+
     const handleEmailChange = e => {
         setEmail(e.target.value)
     }
@@ -27,11 +29,10 @@ export default function ResetPassword(props){
         e.preventDefault()
         if(email === ''){
             setAlert('Please input your email address first', 'danger')
-        } else {
-          forgetPassword ({email})
-          setAlert(`A reset email has been sent to ${email} `, 'success')
+            clearErrors();
         }
-      props.history.push('/login')
+        forgetPassword ({email})
+        props.history.push('/login')
     }
     return (
       <div className="form-container">

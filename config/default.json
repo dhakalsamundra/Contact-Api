@@ -1,6 +1,4 @@
 {
     "mongoURI": "mongodb://Samundra:Samundra@contact-api-shard-00-00.qzrd0.mongodb.net:27017,contact-api-shard-00-01.qzrd0.mongodb.net:27017,contact-api-shard-00-02.qzrd0.mongodb.net:27017/ContactApi?ssl=true&replicaSet=atlas-nmocdp-shard-0&authSource=admin&retryWrites=true&w=majority",
-    "jwtSecret": "secret",
-    "SENDGRID_API_KEY":"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",
-    "FROM_MAIL":"seapush02@gmail.com"
+    "jwtSecret": "secret"
 }
