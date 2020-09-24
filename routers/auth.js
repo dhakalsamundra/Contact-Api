@@ -2,7 +2,7 @@ import express from 'express'
 import { check} from 'express-validator'
 import authJwt from '../middleware/auth'
 import
- { findUserById, signIn, passwordRequestReset,resetPasswordTokenStatus,resetPassword} 
+ { findUserById, signIn,} 
  from '../controllers/auth'
 
 const router = express.Router()
@@ -14,8 +14,8 @@ router.post('/',
     check('password', 'Password is required').exists(),
   ],
 signIn)
-router.post('/forgetPassword', passwordRequestReset)
-router.get('/resetPasswordRequest/:token', resetPasswordTokenStatus)
-router.post('/resetPasswordRequest/:token', resetPassword)
+// router.post('/forgetPassword', authJwt, passwordRequestReset)
+// router.get('/resetPasswordRequest/:token', resetPasswordTokenStatus)
+// router.post('/resetPasswordRequest/:token', resetPassword)
 
 export default router
