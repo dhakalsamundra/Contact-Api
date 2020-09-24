@@ -103,7 +103,7 @@ const AuthState = props => {
   const forgetPassword = async formData => {
     const config = {
       headers: {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'application/json'
       }
     };
     try {
