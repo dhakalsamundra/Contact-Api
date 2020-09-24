@@ -4,7 +4,6 @@ import authRouter from './routers/auth'
 import userRouter from './routers/user'
 import contactRouter from './routers/contact'
 import resetRouter from './routers/password'
-
 import connectDB from './config/db'
 
 
@@ -23,7 +22,6 @@ app.use('/api/users', userRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/contacts', contactRouter)
 app.use('/api/resetPassword', resetRouter)
-
 
 // serve statis assets in production
 if (process.env.NODE_ENV === 'production') {

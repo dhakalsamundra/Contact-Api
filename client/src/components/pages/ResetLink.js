@@ -8,8 +8,9 @@ export default function ResetPassword(props){
 
     const authContext = useContext(AuthContext)
     const alertContext = useContext(AlertContext);
-    const {forgetPassword, error, clearErrors} = authContext
+
     const { setAlert } = alertContext;
+    const {forgetPassword, error, clearErrors} = authContext
 
 
     useEffect(() => {

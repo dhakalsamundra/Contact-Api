@@ -1,12 +1,9 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import config from 'config'
-import sgMail from '@sendgrid/mail'
 
-import { BadRequestError} from '../helpers/apiError'
 import User from '../models/User'
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const findUserById = async (req, res) => {
     try {
