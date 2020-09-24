@@ -41,7 +41,9 @@ export default function NewPassword(props) {
         newPassword({
           password, token
         });
+        setAlert('LogIn with new password', 'success')
       }
+      props.history.push('/login')
     }
   return (
     <div className='form-container'>

@@ -103,11 +103,11 @@ const AuthState = props => {
   const forgetPassword = async formData => {
     const config = {
       headers: {
-        'Content-Type': 'text/plain'
+        'Content-Type': 'application/json'
       }
     };
     try {
-      const res = await axios.post('/api/auth/forgetPassword', formData, config);
+      const res = await axios.post('/api/resetPassword', formData, config);
       dispatch({
         type: FORGET_PASSWORD_SUCCESS,
         payload: res.data
@@ -128,11 +128,7 @@ const AuthState = props => {
       }
     };
     try {
-      // // eslint-disable-next-line
-      //    const {token} = useParams();
-      // console.log('front end auth action', token)
-
-      const res = await axios.post(`/api/auth/resetPasswordRequest/${formData.token}`, formData, config);
+      const res = await axios.post(`/api/resetPassword/${formData.token}`, formData, config);
       console.log('front end auth action', formData.token)
       dispatch({
         type: NEW_PASSWORD_SUCCESS,
