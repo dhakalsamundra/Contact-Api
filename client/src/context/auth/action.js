@@ -29,8 +29,8 @@ const AuthState = props => {
     loading: true,
     user: null,
     error: null,
-    success: null
-  };
+    isSuccess: null
+    };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
 
@@ -63,7 +63,7 @@ const AuthState = props => {
 
       dispatch({
         type: REGISTER_SUCCESS,
-        payload: res.data
+        payload: res.data,
       });
 
       loadUser();
@@ -111,7 +111,7 @@ const AuthState = props => {
       const res = await axios.post('/api/resetPassword', formData, config);
       dispatch({
         type: FORGET_PASSWORD_SUCCESS,
-        payload: res.data
+        payload: res.data,
       });
     } catch (err){
       dispatch({
@@ -129,7 +129,6 @@ const AuthState = props => {
     };
     try {
       const res = await axios.post(`/api/resetPassword/${formData.token}`, formData, config);
-      console.log('front end auth action', formData.token)
       dispatch({
         type: NEW_PASSWORD_SUCCESS,
         payload: res.data
@@ -155,7 +154,7 @@ const AuthState = props => {
         loading: state.loading,
         user: state.user,
         error: state.error,
-        success: state.success,
+        isSuccess: state.isSuccess,
         register,
         loadUser,
         login,
