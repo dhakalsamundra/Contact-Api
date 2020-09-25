@@ -26,13 +26,12 @@ export default (state, action) => {
         ...action.payload,
         isAuthenticated: true,
         loading: false,
-        success: action.payload
       };
     case FORGET_PASSWORD_SUCCESS:
       return{
         ...state,
-        ...action.payload,
-        success: action.payload
+        ...action.payload.data,
+        isSuccess: true
       }
     case FORGET_PASSWORD_FAIL:
       return{
