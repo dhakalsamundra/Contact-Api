@@ -6,7 +6,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  CLEAR_ERRORS, FORGET_PASSWORD_FAIL
+  CLEAR_ERRORS,FORGET_PASSWORD_SUCCESS, FORGET_PASSWORD_FAIL
 } from '../types';
 
 export default (state, action) => {
@@ -25,12 +25,23 @@ export default (state, action) => {
         ...state,
         ...action.payload,
         isAuthenticated: true,
-        loading: false
+        loading: false,
+        success: action.payload
       };
+    case FORGET_PASSWORD_SUCCESS:
+      return{
+        ...state,
+        ...action.payload,
+        success: action.payload
+      }
+    case FORGET_PASSWORD_FAIL:
+      return{
+        ...state,
+        error: action.payload
+      }
     case REGISTER_FAIL:
     case AUTH_ERROR:
     case LOGIN_FAIL:
-    case FORGET_PASSWORD_FAIL:
     case LOGOUT:
       localStorage.removeItem('token');
       return {
