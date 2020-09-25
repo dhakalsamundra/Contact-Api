@@ -1,11 +1,12 @@
 import sgMail from '@sendgrid/mail'
+import bcrypt from 'bcryptjs'
 
-import { BadRequestError} from '../helpers/apiError'
+import { BadRequestError, InternalServerError} from '../helpers/apiError'
+import { SENDGRID_API_KEY, FROM_MAIL } from '../util/secrets'
 import User from '../models/User'
 
 
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const passwordRequestReset = async(req, res)=> {
     try {
@@ -22,16 +23,17 @@ export const passwordRequestReset = async(req, res)=> {
       user.generatePasswordReset()
       await user.save()
       const link = `http://${req.headers.host}/api/resetPassword/${user.resetPasswordToken}`
+      sgMail.setApiKey(SENDGRID_API_KEY)
       //send email
       const mailOptions = {
         to: user.email,
-        from: process.env.FROM_MAIL,
+        from: FROM_MAIL,
         subject: 'password change request',
         text: `Hi ${user.name}, click on this link to reset the password.
         ${link}`,
       }
       console.log('This is information of sending mail', mailOptions)
-      
+      sgMail.setApiKey(SENDGRID_API_KEY)
       const sendMail = await sgMail.send(mailOptions)
       if (sendMail) {
         return res.json({ msg: 'Reset link has been sent to the provided email address.'})
@@ -61,42 +63,37 @@ export const passwordRequestReset = async(req, res)=> {
   }
   
   export const resetPassword = async(req, res) => {
-    try {
-      const { token } = req.params
-      const {password} = req.body
-      console.log('first step backend reset', token)
-      const user = await User.findOne({
-        resetPasswordToken: token,
-        resetPasswordExpires: { $gt: Date.now() },
-      })
-      console.log('2nd step backend reset', user)
-      if (!user) {
-        throw new NotFoundError('Password reset token is invalid or has expired.')
-      }else {
-        // set the new password in bcrypt
-        const salt = bcrypt.genSaltSync(10)
-        console.log('fasdnfsangnrsg', req.body.password)
-        const hashed = await bcrypt.hashSync(req.body.password, salt)
-        //set the new password in database
-        user.password = hashed
-        user.resetPasswordToken = undefined
-        user.resetPasswordExpires = undefined
-      }
-      user.save()
-      console.log('final step', user)
-      sgMail.setApiKey(sendGridApiKey)
-      const mailOptions = {
-        to: user.email,
-        from: fromMail,
-        subject: 'Password reset Confirmation.',
-        text: `Hi ${user.name}, Your Password was successfully changed.`,
-      }
-      console.log('send confirm mail', mailOptions)
-      const sendMail = await sgMail.send(mailOptions)
-      if (sendMail) {
-        res.json({ message: 'Login with your new password now.' })
-      }
-    } catch (error) {
-      res.json(error)
-    }
+    User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}})
+        .then((user) => {
+            if (!user) return res.status(401).json({message: 'Password reset token is invalid or has expired.'});
+
+            // set the password in bcrypt
+            const salt = bcrypt.genSaltSync(10)
+            const hashed =  bcrypt.hashSync(req.body.password, salt)
+            //Set the new password
+            user.password = hashed;
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpires = undefined;
+
+            // Save
+            user.save((err) => {
+                if (err) return res.status(500).json({message: err.message});
+
+                sgMail.setApiKey(SENDGRID_API_KEY)
+                // send email
+                const mailOptions = {
+                    to: user.email,
+                    from: FROM_MAIL,
+                    subject: "Your password has been changed",
+                    text: `Hi ${user.name} \n 
+                    This is a confirmation that the password for your account ${user.email} has just been changed.\n`
+                };
+
+                sgMail.send(mailOptions, (error, result) => {
+                    if (error) return res.status(500).json({message: error.message});
+
+                    res.status(200).json({message: 'Your password has been updated.'});
+                });
+            });
+        });
   }
