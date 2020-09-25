@@ -29,8 +29,10 @@ export const passwordRequestReset = async(req, res)=> {
         to: user.email,
         from: FROM_MAIL,
         subject: 'password change request',
-        text: `Hi ${user.name}, click on this link to reset the password.
-        ${link}`,
+        text: `Hello ${user.name} \n
+               Please click on the following <strong><a href=${link}>link</a></strong> to reset your password. \n\n
+        If you did not request this, please ignore this email and your password will remain unchanged.
+        `,
       }
       console.log('This is information of sending mail', mailOptions)
       sgMail.setApiKey(SENDGRID_API_KEY)
