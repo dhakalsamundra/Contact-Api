@@ -9,17 +9,21 @@ export default function NewPassword(props) {
     const authContext = useContext(AuthContext)
     
     const { setAlert } = alertContext
-    const {newPassword, error, clearErrors} = authContext
+    const {newPassword, error,isSuccess, clearErrors} = authContext
     const {token} = useParams();
 
   
     useEffect(() => {
-        if (error === 'Invalid Credentials') {
+        if (error === 'Internal Server Error') {
             setAlert(error, 'danger');
             clearErrors();
           }
+        if (isSuccess) {
+          setAlert('LogIn with new password', 'success')
+          props.history.push('/');
+          }
     // eslint-disable-next-line
-      }, [error, props.history]);
+      }, [error,isSuccess, props.history]);
 
     const [user, setUser] = useState({
       password: '',
@@ -41,9 +45,7 @@ export default function NewPassword(props) {
         newPassword({
           password, token
         });
-        setAlert('LogIn with new password', 'success')
       }
-      props.history.push('/login')
     }
   return (
     <div className='form-container'>
