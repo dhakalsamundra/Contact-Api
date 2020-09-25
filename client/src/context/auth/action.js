@@ -28,7 +28,8 @@ const AuthState = props => {
     isAuthenticated: null,
     loading: true,
     user: null,
-    error: null
+    error: null,
+    success: null
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -112,7 +113,6 @@ const AuthState = props => {
         type: FORGET_PASSWORD_SUCCESS,
         payload: res.data
       });
-      loadUser();
     } catch (err){
       dispatch({
         type: FORGET_PASSWORD_FAIL,
@@ -134,7 +134,6 @@ const AuthState = props => {
         type: NEW_PASSWORD_SUCCESS,
         payload: res.data
       });
-      loadUser();
     } catch (err){
       dispatch({
         type: NEW_PASSWORD_FAIL,
@@ -156,6 +155,7 @@ const AuthState = props => {
         loading: state.loading,
         user: state.user,
         error: state.error,
+        success: state.success,
         register,
         loadUser,
         login,
