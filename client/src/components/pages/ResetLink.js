@@ -16,7 +16,7 @@ export default function ResetPassword(props){
     useEffect(() => {
       if (isSuccess) {
         setAlert('Reset link has been sent to the provided email address.', 'success')
-        props.history.push('/login');
+        props.history.push('/');
       }
         if (error === 'This email is not associated. Please check your email address.') {
           setAlert(error, 'danger');
@@ -24,7 +24,7 @@ export default function ResetPassword(props){
         }
         
         // eslint-disable-next-line
-      }, [error, isSuccess]);
+      }, [error, isSuccess, props.history]);
 
     const handleEmailChange = e => {
         setEmail(e.target.value)
