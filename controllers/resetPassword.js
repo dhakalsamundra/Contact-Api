@@ -35,7 +35,7 @@ export const passwordRequestReset = async(req, res)=> {
       
       const sendMail = await sgMail.send(mailOptions)
       if (sendMail) {
-        return res.json({ message: 'Reset link has been sent to the provided email address.'})
+        return res.json({ msg: 'Reset link has been sent to the provided email address.'})
       }
     } catch (error) {
       res.send(new BadRequestError('Invalid Request', error))
