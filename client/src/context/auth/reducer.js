@@ -6,7 +6,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  CLEAR_ERRORS,FORGET_PASSWORD_SUCCESS, FORGET_PASSWORD_FAIL
+  CLEAR_ERRORS,FORGET_PASSWORD_SUCCESS, FORGET_PASSWORD_FAIL,
+  NEW_PASSWORD_SUCCESS, NEW_PASSWORD_FAIL
 } from '../types';
 
 export default (state, action) => {
@@ -30,10 +31,21 @@ export default (state, action) => {
     case FORGET_PASSWORD_SUCCESS:
       return{
         ...state,
-        ...action.payload.data,
+        ...action.payload,
+        isSuccess: true
+      }
+    case NEW_PASSWORD_SUCCESS:
+      return{
+        ...state,
+        ...action.payload,
         isSuccess: true
       }
     case FORGET_PASSWORD_FAIL:
+      return{
+        ...state,
+        error: action.payload
+      }
+    case NEW_PASSWORD_FAIL:
       return{
         ...state,
         error: action.payload
