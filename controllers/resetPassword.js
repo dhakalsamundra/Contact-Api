@@ -1,4 +1,3 @@
-import config from 'config'
 import sgMail from '@sendgrid/mail'
 
 import { BadRequestError} from '../helpers/apiError'
@@ -26,7 +25,7 @@ export const passwordRequestReset = async(req, res)=> {
       //send email
       const mailOptions = {
         to: user.email,
-        from: process.env['FROM_MAIL'],
+        from: process.env.FROM_MAIL,
         subject: 'password change request',
         text: `Hi ${user.name}, click on this link to reset the password.
         ${link}`,
