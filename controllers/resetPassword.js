@@ -1,7 +1,7 @@
 import sgMail from '@sendgrid/mail'
 import bcrypt from 'bcryptjs'
 
-import { BadRequestError, InternalServerError} from '../helpers/apiError'
+import { BadRequestError} from '../helpers/apiError'
 import { SENDGRID_API_KEY, FROM_MAIL } from '../util/secrets'
 import User from '../models/User'
 
@@ -41,7 +41,7 @@ export const passwordRequestReset = async(req, res)=> {
         return res.json({ msg: 'Reset link has been sent to the provided email address.'})
       }
     } catch (error) {
-      res.send(new BadRequestError('Invalid Request', error))
+      res.send('Invalid Request', error)
     }
   }
   
