@@ -7,7 +7,6 @@ import User from '../models/User'
 
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const fromMail = process.env.FROM_MAIL
 
 export const passwordRequestReset = async(req, res)=> {
     try {
@@ -27,7 +26,7 @@ export const passwordRequestReset = async(req, res)=> {
       //send email
       const mailOptions = {
         to: user.email,
-        from: fromMail,
+        from: process.env['FROM_MAIL'],
         subject: 'password change request',
         text: `Hi ${user.name}, click on this link to reset the password.
         ${link}`,
@@ -36,7 +35,7 @@ export const passwordRequestReset = async(req, res)=> {
       
       const sendMail = await sgMail.send(mailOptions)
       if (sendMail) {
-        res.json({ message: 'Reset link has been sent to your email address.' })
+        return res.json({ message: 'Reset link has been sent to the provided email address.'})
       }
     } catch (error) {
       res.send(new BadRequestError('Invalid Request', error))
