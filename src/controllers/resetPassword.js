@@ -1,7 +1,6 @@
 import sgMail from '@sendgrid/mail'
 import bcrypt from 'bcryptjs'
 
-import { BadRequestError} from '../helpers/apiError'
 import { SENDGRID_API_KEY, FROM_MAIL } from '../util/secrets'
 import User from '../models/User'
 

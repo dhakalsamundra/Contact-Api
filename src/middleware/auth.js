@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
-import config from 'config'
 
+import {JWT_SECRET} from '../util/secrets'
+
+const jwtSecret = JWT_SECRET
 export default async function authJwt(req, res, next) {
    // Get token from header
    const token = req.header('x-auth-token');
@@ -11,7 +13,7 @@ export default async function authJwt(req, res, next) {
    }
  
    try {
-     const decoded = jwt.verify(token, config.get('jwtSecret'));
+     const decoded = jwt.verify(token, jwtSecret);
  
      req.user = decoded.user;
      next();

@@ -4,6 +4,10 @@ import {validationResult} from 'express-validator'
 import config from 'config'
 
 import User from '../models/User'
+import {JWT_SECRET} from '../util/secrets'
+
+
+const jwtSecret = JWT_SECRET
 
 export const signUpUser = async(req, res) => {
   const errors = validationResult(req);
@@ -40,7 +44,7 @@ export const signUpUser = async(req, res) => {
 
     jwt.sign(
       payload,
-      config.get('jwtSecret'),
+      jwtSecret,
       {
         expiresIn: 360000,
       },
