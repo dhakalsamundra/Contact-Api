@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import {validationResult} from 'express-validator'
-import config from 'config'
 
 import User from '../models/User'
 import {JWT_SECRET} from '../util/secrets'

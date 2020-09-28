@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import config from 'config'
 import {JWT_SECRET} from '../util/secrets'
 import User from '../models/User'
 

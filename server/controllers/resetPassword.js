@@ -10,10 +10,8 @@ import User from '../models/User'
 export const passwordRequestReset = async(req, res)=> {
     try {
       const {email} = req.body
-      console.log('reseet contro', email)
 
       const user = await User.findOne({email: email})
-      console.log('reset contro', user)
 
       if (!user){
       return res.status(400).json({msg: 'This email is not associated. Please check your email address.'});
@@ -33,7 +31,6 @@ export const passwordRequestReset = async(req, res)=> {
         If you did not request this, please ignore this email and your password will remain unchanged.
         `,
       }
-      console.log('This is information of sending mail', mailOptions)
       sgMail.setApiKey(SENDGRID_API_KEY)
       const sendMail = await sgMail.send(mailOptions)
       if (sendMail) {
