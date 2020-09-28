@@ -1,40 +1,43 @@
 {
-  "name": "contact-api",
-  "version": "1.0.0",
-  "description": "Contact manager app",
-  "main": "server.js",
-  "engines": {
-    "node": "12.x",
-    "npm": "6.x"
+  "name": "contact-dir",
+  "version": "0.0.0",
+  "private": true,
+  "nodemonConfig": { 
+    "exec": "npm run dev",
+    "watch": ["server/*", "public/*"],
+    "ignore": ["**/__tests__/**", "*.test.js", "*.spec.js"]
   },
   "scripts": {
-    "start": "nodemon --exec babel-node server.js",
-    "client": "npm start --prefix client",
-    "clientinstall": "npm install --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+    "devstart": "babel-node ./src/bin/www",
+    "start": "npm run build && node ./build/bin/www",
+    "build": "npm run clean && npm run babel-build",
+    "babel-build": "babel -d ./build ./src -s",
+    "clean": "rm -rf ./build && mkdir build",
+    "heroku-postbuild": "cd client && npm install && npm run build"
+    },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@material-ui/icons": "^4.9.1",
     "@sendgrid/mail": "^7.2.6",
+    "axios": "^0.20.0",
+    "babel-preset-env": "^1.7.0",
     "bcryptjs": "^2.4.3",
-    "bluebird": "^3.7.2",
-    "config": "^3.3.1",
+    "config": "^3.3.2",
+    "cookie-parser": "~1.4.4",
+    "core-js": "^3.6.5",
+    "debug": "~2.6.9",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "~4.16.1",
     "express-validator": "^6.6.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.5",
-    "path-to-regexp": "^6.1.0",
-    "winston": "^3.3.3"
+    "mongoose": "^5.10.7",
+    "morgan": "~1.9.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.11.6",
     "@babel/core": "^7.11.6",
     "@babel/node": "^7.10.5",
-    "@babel/preset-env": "^7.11.5",
-    "concurrently": "^5.3.0",
-    "nodemon": "^2.0.4"
+    "@babel/polyfill": "^7.11.5",
+    "@babel/preset-env": "^7.11.5"
   }
 }
