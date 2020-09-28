@@ -48,9 +48,7 @@ const Navbar = ({ title }) => {
   return (
     <div className='navbar bg-primary'>
       <h1>
-        <Link to='/dashboard'>
            {title}
-        </Link>
       </h1>
       <ul>{isAuthenticated ? authLinks : guestLinks}</ul>
     </div>
