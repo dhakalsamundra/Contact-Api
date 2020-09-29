@@ -1,11 +1,10 @@
 import express from 'express'
 
-import { passwordRequestReset, resetPasswordTokenStatus, resetPassword} from '../controllers/resetPassword'
+import { resetPasswordRequest, resetPassword} from '../controllers/resetPassword'
 
 const router = express.Router()
 
-router.post('/', passwordRequestReset)
-router.get('/:token', resetPasswordTokenStatus)
+router.post('/', resetPasswordRequest)
 router.post('/:token', resetPassword)
 
 export default router
