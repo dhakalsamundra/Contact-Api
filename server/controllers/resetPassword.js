@@ -4,63 +4,36 @@ import bcrypt from 'bcryptjs'
 import { SENDGRID_API_KEY, FROM_MAIL } from '../util/secrets'
 import User from '../models/User'
 
+ export const resetPasswordRequest= async(req, res) => {
+    const {email} = req.body
+    const {url} = req.body
+    const user = await User.findOne({ email: email })
+        if (!user) {
+          return res.status(400).json({msg: 'This email is not associated. Please check your email address.'});        }
+        
+          //generate and set the password reset token to the user database
+          user.generatePasswordReset()
+          user.save()
+        console.log('this is the backend side of the reset password request', url)
 
-
-
-export const passwordRequestReset = async(req, res)=> {
-    try {
-      const {email} = req.body
-
-      const user = await User.findOne({email: email})
-
-      if (!user){
-      return res.status(400).json({msg: 'This email is not associated. Please check your email address.'});
-      }
-      // generate and set the password reset token to the user database
-      user.generatePasswordReset()
-      await user.save()
-      const link = `http://${req.headers.host}/api/resetPassword/${user.resetPasswordToken}`
-      sgMail.setApiKey(SENDGRID_API_KEY)
-      //send email
-      const mailOptions = {
-        to: user.email,
-        from: FROM_MAIL,
-        subject: 'password change request',
-        text: `Hello ${user.name} \n
-               Please click on the following <strong><a href=${link}>link</a></strong> to reset your password. \n\n
-        If you did not request this, please ignore this email and your password will remain unchanged.
-        `,
-      }
-      sgMail.setApiKey(SENDGRID_API_KEY)
-      const sendMail = await sgMail.send(mailOptions)
-      if (sendMail) {
-        return res.json({ msg: 'Reset link has been sent to the provided email address.'})
-      }
-    } catch (error) {
-      res.send('Invalid Request', error)
-    }
+        const link = `${url}/${user.resetPasswordToken}`
+        sgMail.setApiKey(SENDGRID_API_KEY)
+        const mailOptions = {
+          to: user.email,
+          from: FROM_MAIL,
+          subject: 'Link to reset password',
+          html: `Link to reset your password and is valid for 1 hour only: <strong><a href=${link}>link</a></strong>`,
+        }
+        sgMail.setApiKey(SENDGRID_API_KEY)
+        const sendMail =  sgMail.send(mailOptions)
+        if(sendMail) {
+          return res.json({msg: 'Reset link has been send to the provided email address.'})
+        } else {
+          res.status(500).send('Internal server error bro..')
+        }
   }
-  
-  export const resetPasswordTokenStatus = async(req, res) => {
-    try {
-      const { token } = req.params
-      const user = await User.findOne({
-        resetPasswordToken: token,
-        resetPasswordExpires: { $gt: Date.now() },
-      })
-      if (!user)
-        return res
-          .status(401)
-          .json({ message: 'Password reset token is invalid or has expired.' })
-      res.redirect(
-        `http://localhost:3000/updatePassword/${user.resetPasswordToken}`
-      )
-    } catch (error) {
-      res.send('password token is expired. so resend the new reset password.')
-    }
-  }
-  
-  export const resetPassword = async(req, res) => {
+
+ export const resetPassword = async(req, res) => {
     User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}})
         .then((user) => {
             if (!user) return res.status(401).json({message: 'Password reset token is invalid or has expired.'});
