@@ -5,6 +5,8 @@ import AlertContext from '../../context/alert/context';
 
 export default function ResetPassword(props){
     const [email, setEmail] = useState('')
+    const url = window.location.href
+    console.log('this is the request url from the client side', url)
 
     const authContext = useContext(AuthContext)
     const alertContext = useContext(AlertContext);
@@ -35,7 +37,7 @@ export default function ResetPassword(props){
         if(email === ''){
             setAlert('Please input your email address first', 'danger')
         } else {
-          forgetPassword ({email})
+          forgetPassword ({email, url})
         }
     }
     return (
