@@ -11,13 +11,6 @@ import '@babel/polyfill'
 
 
 const app = express()
-
-// app.use(express.static(path.join(__dirname, '../client/build')));
-
-// app.get('*', (req, res) => {
-//     res.send(express.static(path.join(__dirname, '../client/build/index.html')))  ;
-//  });
-
 const mongoUrl = MONGODB_URI
 
 mongoose
