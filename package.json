@@ -1,10 +1,10 @@
 {
-  "name": "express-es6-sample",
+  "name": "express-es6-contact",
   "version": "0.2.0",
   "private": true,
   "author": {
-    "name": "Jonathan Cunanan",
-    "url": "https://github.com/jcunanan05"
+    "name": "Samundra Dhjakal",
+    "url": "https://github.com/dhakalsamundra"
   },
   "license": "MIT",
   "dependencies": {
