@@ -1,6 +1,5 @@
 import sgMail from '@sendgrid/mail'
 import bcrypt from 'bcryptjs'
-
 import { SENDGRID_API_KEY, FROM_MAIL } from '../util/secrets'
 import User from '../models/User'
 
@@ -14,16 +13,17 @@ import User from '../models/User'
           //generate and set the password reset token to the user database
           user.generatePasswordReset()
           user.save()
-        console.log('this is the backend side of the reset password request', url)
 
         const link = `${url}/${user.resetPasswordToken}`
         sgMail.setApiKey(SENDGRID_API_KEY)
+        // const mailTransporter = nodemailer.createTransport({ service: 'gmail',JWT_SECRET })
         const mailOptions = {
           to: user.email,
           from: FROM_MAIL,
           subject: 'Link to reset password',
           html: `Link to reset your password and is valid for 1 hour only: <strong><a href=${link}>link</a></strong>`,
         }
+        console.log(mailOptions)
         sgMail.setApiKey(SENDGRID_API_KEY)
         const sendMail =  sgMail.send(mailOptions)
         if(sendMail) {
@@ -31,6 +31,14 @@ import User from '../models/User'
         } else {
           res.status(500).send('Internal server error bro..')
         }
+      //   mailTransporter.sendMail(mailOptions, function(err, data) { 
+      //     if(mailOptions) { 
+      //     return res.json({msg: 'Reset link has been send to the provided email address.'})
+      // } else { 
+      //     res.status(500).send('Internal server error bro..')
+      // } 
+      // });
+        
   }
 
  export const resetPassword = async(req, res) => {
@@ -59,7 +67,7 @@ import User from '../models/User'
                     text: `Hi ${user.name} \n 
                     This is a confirmation that the password for your account ${user.email} has just been changed.\n`
                 };
-
+                console.log(mailOptions)
                 sgMail.send(mailOptions, (error, result) => {
                     if (error) return res.status(500).json({message: error.message});
 
