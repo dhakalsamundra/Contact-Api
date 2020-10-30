@@ -25,17 +25,24 @@ import User from '../models/User'
         }
         console.log(mailOptions)
         sgMail.setApiKey(SENDGRID_API_KEY)
-        const sendMail =  sgMail.send(mailOptions)
-        if(sendMail) {
+        // const sendMail = sgMail.send(mailOptions)
+        sgMail.send(mailOptions)
+        .then(()=> {
+          console.log('Message Sent')
           return res.json({msg: 'Reset link has been send to the provided email address.'})
-        } else {
-          res.status(500).send('Internal server error bro..')
-        }
+        }) .catch(error=> {
+          console.error(error.response.body)
+        })
+      //   if(sendMail) {
+      //     return res.json({msg: 'Reset link has been send to the provided email address.'})
+      //   } else {
+      //     res.status(500).send('Internal server error bro..')
+      //   }
       //   mailTransporter.sendMail(mailOptions, function(err, data) { 
       //     if(mailOptions) { 
       //     return res.json({msg: 'Reset link has been send to the provided email address.'})
       // } else { 
-      //     res.status(500).send('Internal server error bro..')
+      //     console.error(error.response.body)
       // } 
       // });
         
