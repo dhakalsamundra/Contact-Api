@@ -32,19 +32,6 @@ import User from '../models/User'
         }) .catch(error=> {
           console.error(error.response.body)
         })
-      //   if(sendMail) {
-      //     return res.json({msg: 'Reset link has been send to the provided email address.'})
-      //   } else {
-      //     res.status(500).send('Internal server error bro..')
-      //   }
-      //   mailTransporter.sendMail(mailOptions, function(err, data) { 
-      //     if(mailOptions) { 
-      //     return res.json({msg: 'Reset link has been send to the provided email address.'})
-      // } else { 
-      //     console.error(error.response.body)
-      // } 
-      // });
-        
   }
 
  export const resetPassword = async(req, res) => {
