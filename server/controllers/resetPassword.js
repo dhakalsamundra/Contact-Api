@@ -59,6 +59,7 @@ import User from '../models/User'
             user.password = hashed;
             user.resetPasswordToken = undefined;
             user.resetPasswordExpires = undefined;
+            console.log(hashed)
 
             // Save
             user.save((err) => {
@@ -79,6 +80,8 @@ import User from '../models/User'
 
                     res.status(200).json({message: 'Your password has been updated.'});
                 });
-            });
-        });
+            })
+        }).catch(error =>{
+          console.error(error)
+        })
   }
