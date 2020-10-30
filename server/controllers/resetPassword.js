@@ -16,7 +16,6 @@ import User from '../models/User'
 
         const link = `${url}/${user.resetPasswordToken}`
         sgMail.setApiKey(SENDGRID_API_KEY)
-        // const mailTransporter = nodemailer.createTransport({ service: 'gmail',JWT_SECRET })
         const mailOptions = {
           to: user.email,
           from: FROM_MAIL,
