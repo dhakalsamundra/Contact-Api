@@ -61,7 +61,7 @@ import User from '../models/User'
       }
       const sendMail = await sgMail.send(mailOptions)
       if (sendMail) {
-        res.status(200).json({message: 'Your password has been updated. Now, Login with new password.'});
+        res.status(200).json({message: 'Now, Login with new password.'});
       }
     } catch (error) {
       res.json(error)
