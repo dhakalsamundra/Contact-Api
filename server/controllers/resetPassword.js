@@ -34,41 +34,36 @@ import User from '../models/User'
         })
   }
 
- export const resetPassword = async(req, res) => {
-     User.findOne({resetPasswordToken: req.params.token, resetPasswordExpires: {$gt: Date.now()}})
-        .then((user) => {
-            if (!user) return res.status(401).json({message: 'Password reset token is invalid or has expired.'});
-
-            // set the password in bcrypt
-            const salt = bcrypt.genSaltSync(10)
-            const hashed =  bcrypt.hashSync(req.body.password, salt)
-            //Set the new password
-            user.password = hashed;
-            user.resetPasswordToken = undefined;
-            user.resetPasswordExpires = undefined;
-            console.log(hashed)
-
-            // Save
-            user.save((err) => {
-                if (err) return res.status(500).json({message: err.message});
-
-                sgMail.setApiKey(SENDGRID_API_KEY)
-                // send email
-                const mailOptions = {
-                    to: user.email,
-                    from: FROM_MAIL,
-                    subject: "Your password has been changed",
-                    text: `Hi ${user.name} \n 
-                    This is a confirmation that the password for your account ${user.email} has just been changed.\n`
-                };
-                console.log(mailOptions)
-                sgMail.send(mailOptions, (error, result) => {
-                    if (error) return res.status(500).json({message: error.message});
-
-                    res.status(200).json({message: 'Your password has been updated.'});
-                });
-            })
-        }).catch(error =>{
-          console.error(error)
-        })
+  export const resetPassword = async (req, res) => {
+    try {
+      const { token } = req.params
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() },
+      })
+      if (!user) {
+        return res.status(401).json('Password reset token is invalid or has expired.')
+      } else {
+        // set the new password in bcrypt
+        const salt = bcrypt.genSaltSync(10)
+        const hashed = await bcrypt.hashSync(req.body.password, salt)
+        //set the new password in database
+        user.password = hashed
+        user.resetPasswordToken = undefined
+        user.resetPasswordExpires = undefined
+      }
+      user.save()
+      const mailOptions = {
+        to: user.email,
+        from: FROM_MAIL,
+        subject: 'New Password has been added.',
+        text: `Hi ${user.name}, this is a confirmation mail of changing the password.`,
+      }
+      const sendMail = await sgMail.send(mailOptions)
+      if (sendMail) {
+        res.status(200).json({message: 'Your password has been updated. Now, Login with new password.'});
+      }
+    } catch (error) {
+      res.json(error)
+    }
   }
