@@ -65,5 +65,8 @@
     "watch:dev": "nodemon",
     "test": "jest",
     "heroku-postbuild": "cd client && npm install && npm run build"
+  },
+  "engines": {
+    "node": "12.17.0"
   }
 }
