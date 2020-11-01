@@ -1,6 +1,8 @@
 import express from 'express'
 import path from 'path'
 import mongoose from 'mongoose'
+import compression from 'compression'
+import bodyParser from 'body-parser'
 
 import authRouter from './routers/auth'
 import userRouter from './routers/user'
@@ -33,6 +35,9 @@ mongoose
 app.use(express.json({ extended: false }));
 
 app.use(express.static(path.join(__dirname, '../client/build')));
+app.use(compression())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/api/users', userRouter)
 app.use('/api/auth', authRouter)
