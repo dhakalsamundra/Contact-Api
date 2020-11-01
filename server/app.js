@@ -3,6 +3,7 @@ import path from 'path'
 import mongoose from 'mongoose'
 import compression from 'compression'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 
 import authRouter from './routers/auth'
 import userRouter from './routers/user'
@@ -13,8 +14,13 @@ import '@babel/polyfill'
 
 
 const app = express()
-const mongoUrl = MONGODB_URI
+app.use(cors())
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  next()
+})
 
+const mongoUrl = MONGODB_URI
 mongoose
   .connect(mongoUrl, {
     useNewUrlParser: true,
