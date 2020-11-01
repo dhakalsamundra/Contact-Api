@@ -35,15 +35,14 @@ import User from '../models/User'
   }
 
   export const resetPassword = async (req, res) => {
-    try {
-      const { token } = req.params
+    const { token } = req.params
       const user = await User.findOne({
         resetPasswordToken: token,
         resetPasswordExpires: { $gt: Date.now() },
       })
       if (!user) {
         return res.status(401).json('Password reset token is invalid or has expired.')
-      } else {
+      }
         // set the new password in bcrypt
         const salt = bcrypt.genSaltSync(10)
         const hashed = await bcrypt.hashSync(req.body.password, salt)
@@ -51,19 +50,20 @@ import User from '../models/User'
         user.password = hashed
         user.resetPasswordToken = undefined
         user.resetPasswordExpires = undefined
-      }
       user.save()
+      sgMail.setApiKey(SENDGRID_API_KEY)
       const mailOptions = {
         to: user.email,
         from: FROM_MAIL,
         subject: 'New Password has been added.',
         text: `Hi ${user.name}, this is a confirmation mail of changing the password.`,
       }
-      const sendMail = await sgMail.send(mailOptions)
-      if (sendMail) {
-        res.status(200).json({message: 'Now, Login with new password.'});
-      }
-    } catch (error) {
+      sgMail.setApiKey(SENDGRID_API_KEY)
+      sgMail.send(mailOptions)
+      .then(()=> {
+        console.log('Message Sent')
+        return res.json({msg: 'Now, Login with new password.'})
+      }).catch (error=> {
       res.json(error)
-    }
+    })
   }
