@@ -58,6 +58,7 @@
   },
   "scripts": {
     "start": "npm run prod",
+    "serv": "npm run prod && npm start ./client",
     "build": "npm-run-all clean transpile",
     "server": "node ./dist-server/bin/www",
     "dev": "NODE_ENV=development npm-run-all build server",
