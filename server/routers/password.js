@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { resetPasswordRequest, resetPassword} from '../controllers/resetPassword'
+import { resetPasswordRequest, resetPassword } from '../controllers/resetPassword'
 
 const router = express.Router()
 

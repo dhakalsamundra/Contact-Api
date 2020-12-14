@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
-import spinner from './spinner.gif';
+/* eslint-disable react/display-name */
+import React, { Fragment } from 'react'
+import spinner from './spinner.gif'
 
 export default () => (
   <Fragment>
@@ -9,4 +10,4 @@ export default () => (
       alt='Loading...'
     />
   </Fragment>
-);
+)

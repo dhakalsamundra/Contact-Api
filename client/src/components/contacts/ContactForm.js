@@ -1,49 +1,49 @@
-import React, { useState, useContext, useEffect } from 'react';
-import ContactContext from '../../context/contact/context';
+import React, { useState, useContext, useEffect } from 'react'
+import ContactContext from '../../context/contact/context'
 
 const ContactForm = () => {
-  const contactContext = useContext(ContactContext);
+  const contactContext = useContext(ContactContext)
 
-  const { addContact, updateContact, clearCurrent, current } = contactContext;
+  const { addContact, updateContact, clearCurrent, current } = contactContext
 
   useEffect(() => {
     if (current !== null) {
-      setContact(current);
+      setContact(current)
     } else {
       setContact({
         name: '',
         email: '',
         phone: '',
         type: 'personal'
-      });
+      })
     }
-  }, [contactContext, current]);
+  }, [contactContext, current])
 
   const [contact, setContact] = useState({
     name: '',
     email: '',
     phone: '',
     type: 'personal'
-  });
+  })
 
-  const { name, email, phone, type } = contact;
+  const { name, email, phone, type } = contact
 
   const onChange = e =>
-    setContact({ ...contact, [e.target.name]: e.target.value });
+    setContact({ ...contact, [e.target.name]: e.target.value })
 
   const onSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
     if (current === null) {
-      addContact(contact);
+      addContact(contact)
     } else {
-      updateContact(contact);
+      updateContact(contact)
     }
-    clearAll();
-  };
+    clearAll()
+  }
 
   const clearAll = () => {
-    clearCurrent();
-  };
+    clearCurrent()
+  }
 
   return (
     <form onSubmit={onSubmit}>
@@ -103,7 +103,7 @@ const ContactForm = () => {
         </div>
       )}
     </form>
-  );
-};
+  )
+}
 
-export default ContactForm;
+export default ContactForm

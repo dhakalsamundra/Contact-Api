@@ -13,6 +13,7 @@
     "@babel/polyfill": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@sendgrid/mail": "^7.2.6",
+    "babel-jest": "^24.9.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
@@ -57,19 +58,31 @@
     "testEnvironment": "node"
   },
   "scripts": {
+    "cypress:open": "cypress open",
+    "test:e2e": "cypress run",
     "start": "npm run prod",
-    "serv": "npm run prod && npm start ./client",
     "build": "npm-run-all clean transpile",
     "server": "node ./dist-server/bin/www",
+    "client": "npm start --prefix client",
+    "clientinstall": "npm install --prefix client",
+    "serve": "concurrently \"npm run server\" \"npm run client\"",
     "dev": "NODE_ENV=development npm-run-all build server",
     "prod": "NODE_ENV=production npm-run-all build server",
     "transpile": "babel ./server --out-dir dist-server",
     "clean": "rimraf dist-server",
     "watch:dev": "nodemon",
     "test": "jest",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "eslint": "eslint './**/*.{js, jsx}'"
   },
   "engines": {
     "node": "12.17.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "cypress": "^6.1.0",
+    "eslint": "^7.15.0",
+    "eslint-plugin-cypress": "^2.11.2",
+    "eslint-plugin-jest": "^23.11.0",
+    "eslint-plugin-react": "^7.21.5"
   }
 }

@@ -1,11 +1,11 @@
-import React, { useReducer } from 'react';
-import axios from 'axios';
+import React, { useReducer } from 'react'
+import axios from 'axios'
 // import { useParams } from 'react-router';
 
 
-import AuthContext from './context';
-import authReducer from './reducer';
-import setAuthToken from '../../utils/setAuthToken';
+import AuthContext from './context'
+import authReducer from './reducer'
+import setAuthToken from '../../utils/setAuthToken'
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -19,7 +19,7 @@ import {
   FORGET_PASSWORD_FAIL,
   NEW_PASSWORD_SUCCESS,
   NEW_PASSWORD_FAIL,
-} from '../types';
+} from '../types'
 
 
 const AuthState = props => {
@@ -30,25 +30,25 @@ const AuthState = props => {
     user: null,
     error: null,
     isSuccess: null
-    };
+  }
 
-  const [state, dispatch] = useReducer(authReducer, initialState);
+  const [state, dispatch] = useReducer(authReducer, initialState)
 
   // Load User
   const loadUser = async () => {
-    setAuthToken(localStorage.token);
+    setAuthToken(localStorage.token)
 
     try {
-      const res = await axios.get('/api/auth');
+      const res = await axios.get('/api/auth')
 
       dispatch({
         type: USER_LOADED,
         payload: res.data
-      });
+      })
     } catch (err) {
-      dispatch({ type: AUTH_ERROR });
+      dispatch({ type: AUTH_ERROR })
     }
-  };
+  }
 
   // Register User
   const register = async formData => {
@@ -56,24 +56,24 @@ const AuthState = props => {
       headers: {
         'Content-Type': 'application/json'
       }
-    };
+    }
 
     try {
-      const res = await axios.post('/api/users', formData, config);
+      const res = await axios.post('/api/users', formData, config)
 
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data,
-      });
+      })
 
-      loadUser();
+      loadUser()
     } catch (err) {
       dispatch({
         type: REGISTER_FAIL,
         payload: err.response.data.msg
-      });
+      })
     }
-  };
+  }
 
   // Login User
   const login = async formData => {
@@ -81,38 +81,38 @@ const AuthState = props => {
       headers: {
         'Content-Type': 'application/json'
       }
-    };
+    }
 
     try {
-      const res = await axios.post('/api/auth', formData, config);
+      const res = await axios.post('/api/auth', formData, config)
 
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
-      });
+      })
 
 
-      loadUser();
+      loadUser()
     } catch (err) {
       dispatch({
         type: LOGIN_FAIL,
         payload: err.response.data.msg
-      });
+      })
     }
-  };
+  }
   // ForgetPassword
   const forgetPassword = async formData => {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
-    };
+    }
     try {
-      const res = await axios.post('/api/resetPassword', formData, config);
+      const res = await axios.post('/api/resetPassword', formData, config)
       dispatch({
         type: FORGET_PASSWORD_SUCCESS,
         payload: res.data,
-      });
+      })
     } catch (err){
       dispatch({
         type: FORGET_PASSWORD_FAIL,
@@ -126,13 +126,13 @@ const AuthState = props => {
       headers: {
         'Content-Type': 'application/json'
       }
-    };
+    }
     try {
-      const res = await axios.post(`/api/resetPassword/${formData.token}`, formData, config);
+      const res = await axios.post(`/api/resetPassword/${formData.token}`, formData, config)
       dispatch({
         type: NEW_PASSWORD_SUCCESS,
         payload: res.data
-      });
+      })
     } catch (err){
       dispatch({
         type: NEW_PASSWORD_FAIL,
@@ -141,10 +141,10 @@ const AuthState = props => {
     }
   }
   // Logout
-  const logout = () => dispatch({ type: LOGOUT });
+  const logout = () => dispatch({ type: LOGOUT })
 
   // Clear Errors
-  const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
+  const clearErrors = () => dispatch({ type: CLEAR_ERRORS })
 
   return (
     <AuthContext.Provider
@@ -166,7 +166,7 @@ const AuthState = props => {
     >
       {props.children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-export default AuthState;
+export default AuthState
