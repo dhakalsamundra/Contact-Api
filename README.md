@@ -21,4 +21,4 @@ For stuff like heroku deployment, aws elasticbeanstalk, run `npm run start`
 * `build` - clean and transpile
 
 ### To see the project deployment, click the link below
-######. https://phonebook-directory.herokuapp.com/
+######. https://contact-dir-app.herokuapp.com/
