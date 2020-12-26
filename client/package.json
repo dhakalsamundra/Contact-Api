@@ -26,7 +26,7 @@
     "eslint": "eslint './**/*.{js,jsx}'"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app, developit"
   },
   "browserslist": {
     "production": [
