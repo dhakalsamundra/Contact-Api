@@ -101,6 +101,7 @@ const Register = props => {
         </div>
         <input
           type='submit'
+          id='register'
           value='Register'
           className='btn btn-primary btn-block'
         />

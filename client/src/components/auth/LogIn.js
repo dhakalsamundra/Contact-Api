@@ -75,10 +75,11 @@ export default function Login(props){
         </div>
         <input
           type='submit'
+          id='login'
           value='Login'
           className='btn btn-primary btn-block'
         />
-        <button onClick={handlePasswordReset} className='btn btn-secondary btn-block'>Forget Password</button>
+        <button onClick={handlePasswordReset} className='btn btn-secondary btn-block' id='forget'>Forget Password</button>
       </form>
     </div>
   )

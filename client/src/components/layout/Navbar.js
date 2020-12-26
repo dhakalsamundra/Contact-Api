@@ -28,7 +28,7 @@ const Navbar = ({ title }) => {
       <li>Hello {user && user.name}</li>
       <li><br></br>
         <IconButton onClick={onLogout} href='/'>
-          <ExitToAppIcon />
+          <ExitToAppIcon id='logout'/>
         </IconButton>
       </li>
     </Fragment>

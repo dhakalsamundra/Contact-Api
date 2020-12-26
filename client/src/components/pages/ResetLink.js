@@ -49,6 +49,7 @@ export default function ResetPassword(props){
       <form onSubmit={handleEmailSubmit}>
         <input
           name="email"
+          id='email'
           type="email"
           value={email}
           onChange={handleEmailChange}
@@ -57,6 +58,7 @@ export default function ResetPassword(props){
         <input
           className="btn btn-primary btn-block"
           value="submit"
+          id='submit'
           type="submit"
         />
       </form>

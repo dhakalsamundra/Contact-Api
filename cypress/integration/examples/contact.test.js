@@ -52,16 +52,16 @@ describe('Contact', function(){
       cy.contains('Personal')
     })
 
-    it('can delete the contact', function () {
-      cy.contains('Delete').click()
-
-      cy.contains('Contact deleted')
-    })
-
     it('can search the contact', function () {
       cy.get('#search').type('xxx@xxx.com')
 
       cy.contains('xxx@xxx.com')
+    })
+
+    it('can delete the contact', function () {
+      cy.contains('Delete').click()
+
+      cy.contains('Contact deleted')
     })
   })
 
