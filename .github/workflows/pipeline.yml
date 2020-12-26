@@ -24,13 +24,10 @@ jobs:
 
       - name: lint
         run: npm run eslint
-        
+
       - name: build
         run: npm run build
       
-      - name: lint
-        run: npm run eslint
-
       - name: Deploy to heroku
         if: ${{ github.event_name == 'push' }}
         uses: akhileshns/heroku-deploy@v3.7.8
