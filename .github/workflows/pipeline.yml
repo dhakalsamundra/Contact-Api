@@ -27,6 +27,11 @@ jobs:
 
       - name: build
         run: npm run build
+
+      - name: API Testing
+        with:
+          command: npm run test
+          start: npm start
       
       - uses: actions/checkout@v2
         with:
