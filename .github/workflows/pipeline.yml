@@ -30,7 +30,7 @@ jobs:
 
       - name: API Testing
         with:
-          command: npm run test
+          run: npm run test
           start: npm start
       
       - uses: actions/checkout@v2
