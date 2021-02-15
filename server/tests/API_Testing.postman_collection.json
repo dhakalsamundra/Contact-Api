@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "56dd62e1-2778-4277-a998-428a9fb324e4",
+		"name": "API Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LogIn",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', function() {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.test('User must get token on login', function (){",
+							"    pm.response.to.have.status(200)",
+							"    pm.response.to.have.jsonBody('token')",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"seapush02@gmail.com\",\n    \"password\": \"Seapush02\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3002/api/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"api",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Contacts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', function() {",
+							"    pm.response.to.have.status(200)",
+							"});",
+							"",
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.test('response data must be an Array', function (){",
+							"    pm.response.to.have.status(200)",
+							"    pm.response.to.have.jsonBody(Array)",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWY5MTJkNThjM2NlNjQwNjExMDk2YTM2In0sImlhdCI6MTYxMzEyODQ1NiwiZXhwIjoxNjEzNDg4NDU2fQ.n5Guj8nSICRS5aGcrLI8u8QHGDx-GYkEqCQFrikYPRI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3002/api/contacts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3002",
+					"path": [
+						"api",
+						"contacts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
